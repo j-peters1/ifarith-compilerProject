@@ -128,14 +128,14 @@
     [`(,(? bop? bop) ,e0 ,e1) `(,bop ,(ifarith->ifarith-tiny e0) ,(ifarith->ifarith-tiny e1))]
     [`(,(? uop? uop) ,e) `(,uop ,(ifarith->ifarith-tiny e))]
     ;; 0-binding case
-    [`(let* () ,e) 'todo]
+    [`(let* () ,e) (ifarith->ifarith-tiny e)]
     ;; 1+-binding case
     [`(let* ([,(? symbol? x0) ,e0]) ,e-body)
-     'todo]
+      (ifarith->ifarith-tiny (let ([x0 e0]) e-body))]
     [`(let* ([,(? symbol? x0) ,e0] ,rest-binding-pairs ...) ,e-body)
      'todo]
     ;; print an arbitrary expression (must be a number at runtime)
-    [`(print ,_)
+    [`(print ,_) 
      e]
     ;; and/or, with short-circuiting semantics
     [`(and ,e0) (ifarith->ifarith-tiny e0)]
@@ -146,7 +146,7 @@
     [`(if ,e0 ,e1 ,e2) `(if ,(ifarith->ifarith-tiny e0)
                             ,(ifarith->ifarith-tiny e1)
                             ,(ifarith->ifarith-tiny e2))]
-    ;; cond where the last case is else
+    ;; cond where the last case is else 
     [`(cond [else ,(? ifarith? else-body)])
      (ifarith->ifarith-tiny else-body)]
     [`(cond [,c0 ,e0] ,rest ...)
