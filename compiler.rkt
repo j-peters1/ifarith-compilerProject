@@ -131,9 +131,14 @@
     [`(let* () ,e) (ifarith->ifarith-tiny e)]
     ;; 1+-binding case
     [`(let* ([,(? symbol? x0) ,e0]) ,e-body)
-      (ifarith->ifarith-tiny (let ([x0 e0]) e-body))]
+       
+         `(let ([,x0 ,(ifarith->ifarith-tiny e0)]) ,(ifarith->ifarith-tiny e-body))]
+    
     [`(let* ([,(? symbol? x0) ,e0] ,rest-binding-pairs ...) ,e-body)
-     'todo]
+
+       `(let ([,x0 ,(ifarith->ifarith-tiny e0)])
+         ,(ifarith->ifarith-tiny `(let* ,rest-binding-pairs ,e-body)))]
+    
     ;; print an arbitrary expression (must be a number at runtime)
     [`(print ,_) 
      e]
