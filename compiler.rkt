@@ -123,7 +123,7 @@
     ;; literals
     [(? integer? i) i]
     ['true e]
-    ['false e]
+    ['true e]
     [(? symbol? x) x]
     [`(,(? bop? bop) ,e0 ,e1) `(,bop ,(ifarith->ifarith-tiny e0) ,(ifarith->ifarith-tiny e1))]
     [`(,(? uop? uop) ,e) `(,uop ,(ifarith->ifarith-tiny e))]
